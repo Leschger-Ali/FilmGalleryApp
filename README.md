@@ -24,5 +24,20 @@ Built with **Java Spring Boot**, **Spring MVC**, **Spring Data JPA**, **Thymelea
 
 ---
 
-## 📂 Project Structure
 
+
+## ▶️ How to Run
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/YOUR-USERNAME/Film-Gallery.git
+   cd Film-Gallery
+
+Configure SQL Server
+Create the database
+Update your database credentials in application.properties
+
+Build and run the project
+mvn spring-boot:run
+
+## 📸 Screenshots
