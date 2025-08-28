@@ -1,5 +1,7 @@
 # 🎬 Film Gallery
 
+> ⚠️ **Project Status:** This project is still under development. Upcoming features will include movie categorization (e.g., Action, Drama), linking movies with actors and directors, and much more.
+
 A simple web application to display and manage a movie gallery.  
 Built with **Java Spring Boot**, **Spring MVC**, **Spring Data JPA**, **Thymeleaf**, and **SQL Server**.
 
@@ -33,7 +35,7 @@ Built with **Java Spring Boot**, **Spring MVC**, **Spring Data JPA**, **Thymelea
    git clone https://github.com/YOUR-USERNAME/Film-Gallery.git
    cd Film-Gallery
 
-## Configure SQL Server
+## 📦 Configure SQL Server
 - **Restore the SQL Server database (Backup included) – this repo contains FilmGallery.bak
 - **Update your database credentials in application.properties
 
@@ -45,10 +47,10 @@ spring.jpa.show-sql=true
 
 
 
-## Build and run 
+##⚡Build and run 
 mvn spring-boot:run
 
-## Open in browser
+## 🌍 Open in browser
 - **http://localhost:8080
 
 
