@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Magazine Stories</title>
+
+    <style>
+        /* ===========================
+           Magazin-Layout (Startseite)
+           Datenquelle: ${films} (aus Controller)
+           =========================== */
+        :root {
+            --bg: #161616;
+            --text: #f3f3f3;
+            --accent: #f87171;
+            --card-bg: #222;
+            --radius: 12px;
+            --shadow: 0 10px 24px rgba(0,0,0,0.35);
+            --maxw: 1400px;
+        }
+        body {
+            font-family: "Georgia", serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            line-height: 1.65;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            min-height: 100vh;
+        }
+        .footer{
+            text-align: center;
+            padding: 1.75rem 2rem;
+            background: var(--accent);
+            color: #fff;
+            margin-top: 1rem;
+            margin-bottom: 0;
+        }
+
+        header { text-align: center; padding: 1.75rem 1rem; background: var(--accent); color: #fff; }
+        header h1 { margin: 0 0 .25rem 0; }
+        header p { margin: 0; opacity: .95; }
+
+        /* 3-spaltiges Grid wie in Screenshot */
+        main {
+            max-width: var(--maxw);
+            margin: auto;
+            padding: 2rem 1rem 3rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .story-card {
+            display: grid; gap: 1.5rem; align-items: stretch;
+            grid-template-columns: 40% 1fr;
+            background: var(--card-bg); border-radius: var(--radius);
+            box-shadow: var(--shadow); overflow: hidden;
+            transition: transform .25s ease, box-shadow .25s ease;
+            overflow:hidden;
+        }
+        .story-card:hover { transform: translateY(-6px); }
+
+        .story-thumb{
+            grid-column: 1 / 2;
+            width:100%;
+            height:100%;
+            display:block;
+            object-fit:cover;
+            margin:0;
+        }
+        .story-content{
+            grid-column: 2 / 3;
+            padding:1.25rem;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+        }
+
+
+        /* Titel in Akzentfarbe */
+        .story-title { margin: 0 0 .4rem 0; font-size: 1.5rem; color: var(--accent); line-height: 1.2; }
+
+        .story-excerpt { margin: 0 0 .85rem 0; color: #ddd; }
+        .read-more { color: var(--accent); font-weight: bold; text-decoration:none; border-bottom: 2px solid transparent; }
+        .read-more:hover { text-decoration: underline; transform: translateY(-2px); }
+
+        @media (max-width: 1024px) { main { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 720px)  {
+            main { grid-template-columns: 1fr; }
+            .story-card { flex-direction: column; }
+            .story-thumb { width: 100%; height: 240px; }
+            .story-content { padding: 1rem 1.25rem 1.25rem; }
+        }
+
+        .pagination{
+            display: flex;
+            font-size: x-large;
+            place-content: center;
+            gap: 1.5rem;
+            color: white;
+        }
+        .pagination a{
+            color: white;
+        }
+        .footer a {color: white;  text-decoration: none; }
+        .footer a {
+            color: #12444d;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Film Gallery</h1>
+    <p>Discover, Relive, and Enjoy the Best Films</p>
+</header>
+
+<main>
+    <!-- Grid der Filme (max. 9 pro Seite) -->
+    <article class="story-card" th:each="f : ${films}">
+        <a th:href="@{|/films/${f.id}|}" aria-label="Open details">
+            <img class="story-thumb" th:src="${f.posterUrl}" th:alt="${f.title}"
+                 loading="lazy" decoding="async" width="600" height="360"/>
+        </a>
+        <div class="story-content">
+            <h2 class="story-title" th:text="${f.title}">Film Title</h2>
+            <p class="story-excerpt" th:text="${#strings.abbreviate(f.description, 180)}">Excerpt…</p>
+            <a class="read-more" th:href="@{|/films/${f.id}|}">Read More</a>
+        </div>
+    </article>
+</main>
+
+<!-- Pagination-Navigation -->
+<nav class="pagination" th:if="${totalPages > 1}">
+    <!-- Previous -->
+    <a th:classappend="${hasPrevious} ? '' : ' disabled'"
+       th:href="@{/(page=${currentPage - 1})}">Previous</a>
+
+    <!-- Seitenzahlen 0..totalPages-1 -->
+    <span th:each="p : ${#numbers.sequence(0, totalPages - 1)}"
+          th:classappend="${p == currentPage} ? 'active' : ''">
+    <a th:if="${p != currentPage}" th:href="@{/(page=${p})}" th:text="${p + 1}">1</a>
+    <span th:if="${p == currentPage}" th:text="${p + 1}">1</span>
+  </span>
+
+    <!-- Next -->
+    <a th:classappend="${hasNext} ? '' : ' disabled'"
+       th:href="@{/(page=${currentPage + 1})}">Next</a>
+</nav>
+
+<footer class="footer">
+    <div class="dev-section">
+        <span class="label">Developed by</span>
+        <div class="names">
+            <a href="https://github.com/Leschger-Ali" target="_blank">Leschger Ali</a>
+        </div>
+        © 2025 – All rights reserved.
+    </div>
+
+</footer>
+</body>
+</html>
